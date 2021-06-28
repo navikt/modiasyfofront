@@ -2,7 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: syfomodiaperson
-  namespace: default
+  namespace: teamsykefravr
   labels:
     team: teamsykefravr
 spec:
@@ -33,9 +33,18 @@ spec:
     requests:
       cpu: 100m
       memory: 128Mi
-  webproxy: false
   ingresses:
-    - "https://syfomodiaperson.nais.adeo.no"
+    - "https://syfomodiaperson.intern.nav.no"
+  azure:
+    application:
+      enabled: true
+      tenant: nav.no
+      replyURLs:
+        - "https://syfomodiaperson.intern.nav.no/oauth2/callback"
+      claims:
+        extra:
+          - "NAVident"
+  webproxy: true
   env:
     - name: NAIS_CONTEXT
       value: 'prod'
