@@ -1,5 +1,6 @@
+import path from "path";
+
 const express = require("express");
-const path = require("path");
 const prometheus = require("prom-client");
 const proxy = require("express-http-proxy");
 const cookieParser = require("cookie-parser");
