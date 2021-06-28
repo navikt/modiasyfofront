@@ -45,4 +45,4 @@ router.get("/dm2/", function (req, res) {
   res.status(200).send(isEnabled);
 });
 
-module.exports = router
+module.exports = router;
