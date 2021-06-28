@@ -9,4 +9,4 @@ COPY dist ./dist
 COPY server ./server
 
 EXPOSE 8080
-CMD ["ts-node", "server.ts"]
+CMD ["node", "server.ts"]

@@ -27,7 +27,8 @@
     //Todo: Endre til true og legg inn returntyper i sagas
     "noImplicitAny": false,
     "strictNullChecks": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   },
   "exclude": ["node_modules"],
   "include": ["server"]
