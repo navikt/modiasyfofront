@@ -53,8 +53,6 @@ type DialogmoteInnkallingSkjemaFeil = Partial<
 const texts = {
   send: "Send innkallingene",
   cancel: "Avbryt",
-  errorMsg:
-    "Innkallingene kunne ikke sendes på grunn av en midlertidig teknisk feil. Prøv igjen.",
 };
 
 const toInnkalling = (
@@ -92,7 +90,7 @@ const DialogmoteInnkallingSkjema = ({
   const dispatch = useDispatch();
   const fnr = useValgtPersonident();
   const navEnhet = useNavEnhet();
-  const { senderInnkalling, sendInnkallingFeilet } = useAppSelector(
+  const { senderInnkalling, sendInnkallingFeil } = useAppSelector(
     (state) => state.dialogmote
   );
   const {
@@ -141,9 +139,11 @@ const DialogmoteInnkallingSkjema = ({
             <DialogmoteInnkallingVelgArbeidsgiver />
             <DialogmoteTidOgSted />
             <DialogmoteInnkallingTekster />
-            {sendInnkallingFeilet && (
+            {sendInnkallingFeil && (
               <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>{texts.errorMsg}</AlertStripeFeil>
+                <AlertStripeFeil>
+                  {sendInnkallingFeil.defaultErrorMsg}
+                </AlertStripeFeil>
               </FlexRow>
             )}
             {submitFailed && !feilUtbedret && (

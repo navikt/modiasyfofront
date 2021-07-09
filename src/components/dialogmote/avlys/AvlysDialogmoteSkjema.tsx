@@ -26,8 +26,6 @@ export const texts = {
   begrunnelseArbeidsgiverLabel: "Begrunnelse til nærmeste leder",
   send: "Send avlysning",
   avbryt: "Avbryt",
-  errorMsg:
-    "Møtet kunne ikke avlyses på grunn av en midlertidig teknisk feil. Prøv igjen.",
   alert:
     "Hvis årsaken til avlysning er at arbeidstakeren ikke møtte opp, bør du vurdere om sykepengene skal stanses.",
   forhandsvisningTitle: "Avlysning av dialogmøte",
@@ -67,7 +65,7 @@ const AvlysDialogmoteSkjema = ({
 }: AvlysDialogmoteSkjemaProps): ReactElement => {
   const dispatch = useDispatch();
   const fnr = useValgtPersonident();
-  const { avlyserMote, avlysMoteFeilet } = useAppSelector(
+  const { avlyserMote, avlysMoteFeil } = useAppSelector(
     (state) => state.dialogmote
   );
   const {
@@ -154,9 +152,11 @@ const AvlysDialogmoteSkjema = ({
                 generateAvlysningArbeidsgiverDocument(values)
               }
             />
-            {avlysMoteFeilet && (
+            {avlysMoteFeil && (
               <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>{texts.errorMsg}</AlertStripeFeil>
+                <AlertStripeFeil>
+                  {avlysMoteFeil.defaultErrorMsg}
+                </AlertStripeFeil>
               </FlexRow>
             )}
             <AvlysningAlertStripe type="advarsel">

@@ -9,10 +9,10 @@ import {
   EndreTidStedAction,
   endreTidStedFeilet,
   endreTidStedFullfort,
-  ferdigstillMoteFeilet,
-  ferdigstillMoteFullfort,
   ferdigstillerMote,
   FerdigstillMoteAction,
+  ferdigstillMoteFeilet,
+  ferdigstillMoteFullfort,
   FetchDialogmoteAction,
   fetchDialogmoteFailed,
   fetchDialogmoteSuccess,
@@ -21,65 +21,91 @@ import {
   opprettInnkallingFeilet,
   opprettInnkallingFullfort,
 } from "./dialogmote_actions";
-import { get, post } from "../../api";
-import { DialogmoteDTO } from "./types/dialogmoteTypes";
+import { get, post, Result, Success } from "../../api/api";
+import {
+  AvlysDialogmoteDTO,
+  DialogmoteDTO,
+  DialogmoteInnkallingDTO,
+  EndreTidStedDialogmoteDTO,
+} from "./types/dialogmoteTypes";
+import { NewDialogmoteReferatDTO } from "./types/dialogmoteReferatTypes";
 
 function* opprettInnkalling(action: OpprettInnkallingAction) {
   yield put(oppretterInnkalling());
-  try {
-    const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/personident`;
-    yield call(post, path, action.data, action.fnr);
+  const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/personident`;
+  const result: Result<DialogmoteInnkallingDTO> = yield call(
+    post,
+    path,
+    action.data,
+    action.fnr
+  );
+
+  if (result instanceof Success) {
     yield put(opprettInnkallingFullfort());
     window.location.href = `/sykefravaer/moteoversikt`;
-  } catch (e) {
-    yield put(opprettInnkallingFeilet());
+  } else {
+    yield put(opprettInnkallingFeilet(result.error));
   }
 }
 
 function* fetchDialogmoteSaga(action: FetchDialogmoteAction) {
-  try {
-    const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/get/v1/dialogmote/personident`;
-    const dialogmoter: DialogmoteDTO[] = yield call(get, path, action.fnr);
-    yield put(fetchDialogmoteSuccess(dialogmoter));
-  } catch (e) {
-    console.log(e);
-    yield put(fetchDialogmoteFailed());
+  const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/get/v1/dialogmote/personident`;
+  const result: Result<DialogmoteDTO[]> = yield call(get, path, action.fnr);
+  if (result instanceof Success) {
+    yield put(fetchDialogmoteSuccess(result.data));
+  } else {
+    yield put(fetchDialogmoteFailed(result.error));
   }
 }
 
 function* avlysDialogmote(action: AvlysMoteAction) {
   yield put(avlyserMote());
-  try {
-    const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/avlys`;
-    yield call(post, path, action.data);
+  const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/avlys`;
+  const result: Result<AvlysDialogmoteDTO> = yield call(
+    post,
+    path,
+    action.data
+  );
+
+  if (result instanceof Success) {
     yield put(avlysMoteFullfort());
     window.location.href = `/sykefravaer/moteoversikt`;
-  } catch (e) {
-    yield put(avlysMoteFeilet());
+  } else {
+    yield put(avlysMoteFeilet(result.error));
   }
 }
 
 function* endreTidStedDialogmote(action: EndreTidStedAction) {
   yield put(endrerTidSted());
-  try {
-    const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/tidsted`;
-    yield call(post, path, action.data);
+  const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/tidsted`;
+  const result: Result<EndreTidStedDialogmoteDTO> = yield call(
+    post,
+    path,
+    action.data
+  );
+
+  if (result instanceof Success) {
     yield put(endreTidStedFullfort());
     window.location.href = `/sykefravaer/moteoversikt`;
-  } catch (e) {
-    yield put(endreTidStedFeilet());
+  } else {
+    yield put(endreTidStedFeilet(result.error));
   }
 }
 
 function* ferdigstillDialogmote(action: FerdigstillMoteAction) {
   yield put(ferdigstillerMote());
-  try {
-    const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/ferdigstill`;
-    yield call(post, path, action.data);
+  const path = `${process.env.REACT_APP_ISDIALOGMOTE_ROOT}/post/v1/dialogmote/${action.moteUuid}/ferdigstill`;
+  const result: Result<NewDialogmoteReferatDTO> = yield call(
+    post,
+    path,
+    action.data
+  );
+
+  if (result instanceof Success) {
     yield put(ferdigstillMoteFullfort());
     window.location.href = `/sykefravaer/moteoversikt`;
-  } catch (e) {
-    yield put(ferdigstillMoteFeilet());
+  } else {
+    yield put(ferdigstillMoteFeilet(result.error));
   }
 }
 

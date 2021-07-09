@@ -77,7 +77,7 @@ export const Motelandingsside = ({ fnr }: Props) => {
   return (
     <SideLaster
       henter={!harForsoktHentetAlt}
-      hentingFeilet={motebehov.hentingFeilet || dialogmote.henterMoteFeilet}
+      hentingFeilet={motebehov.hentingFeilet || !!dialogmote.henterMoteFeil}
     >
       <Sidetopp tittel={texts.dialogmoter} />
 

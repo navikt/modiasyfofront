@@ -1,10 +1,11 @@
 import {
+  AvlysDialogmoteDTO,
   DialogmoteDTO,
   DialogmoteInnkallingDTO,
-  AvlysDialogmoteDTO,
   EndreTidStedDialogmoteDTO,
 } from "./types/dialogmoteTypes";
 import { NewDialogmoteReferatDTO } from "./types/dialogmoteReferatTypes";
+import { ApiError } from "../../api/api";
 
 export enum DialogmoteActionTypes {
   OPPRETT_INNKALLING_FORESPURT = "OPPRETT_INNKALLING_FORESPURT",
@@ -40,6 +41,7 @@ export interface OppretterInnkallingAction {
 
 export interface OpprettInnkallingFeiletAction {
   type: DialogmoteActionTypes.OPPRETT_INNKALLING_FEILET;
+  error: ApiError;
 }
 
 export interface OpprettInnkallingFullfortAction {
@@ -53,6 +55,7 @@ export interface FetchDialogmoteAction {
 
 export interface FetchDialogmoteFailedAction {
   type: DialogmoteActionTypes.FETCH_DIALOGMOTE_FAILED;
+  error: ApiError;
 }
 
 export interface FetchDialogmoteSuccessAction {
@@ -73,6 +76,7 @@ export interface AvlyserMoteAction {
 
 export interface AvlysMoteFeiletAction {
   type: DialogmoteActionTypes.AVLYS_MOTE_FEILET;
+  error: ApiError;
 }
 
 export interface AvlysMoteFullfortAction {
@@ -92,6 +96,7 @@ export interface EndrerTidStedAction {
 
 export interface EndreTidStedFeiletAction {
   type: DialogmoteActionTypes.ENDRE_TID_STED_FEILET;
+  error: ApiError;
 }
 
 export interface EndreTidStedFullfortAction {
@@ -111,6 +116,7 @@ export interface FerdigstillerMoteAction {
 
 export interface FerdigstillMoteFeiletAction {
   type: DialogmoteActionTypes.FERDIGSTILL_MOTE_FEILET;
+  error: ApiError;
 }
 
 export interface FerdigstillMoteFullfortAction {
@@ -151,8 +157,11 @@ export const oppretterInnkalling = (): OppretterInnkallingAction => ({
   type: DialogmoteActionTypes.OPPRETTER_INNKALLING,
 });
 
-export const opprettInnkallingFeilet = (): OpprettInnkallingFeiletAction => ({
+export const opprettInnkallingFeilet = (
+  error: ApiError
+): OpprettInnkallingFeiletAction => ({
   type: DialogmoteActionTypes.OPPRETT_INNKALLING_FEILET,
+  error,
 });
 
 export const opprettInnkallingFullfort = (): OpprettInnkallingFullfortAction => ({
@@ -163,8 +172,11 @@ export const fetchDialogmote = (fnr: string): FetchDialogmoteAction => ({
   type: DialogmoteActionTypes.FETCH_DIALOGMOTE,
   fnr,
 });
-export const fetchDialogmoteFailed = (): FetchDialogmoteFailedAction => ({
+export const fetchDialogmoteFailed = (
+  error: ApiError
+): FetchDialogmoteFailedAction => ({
   type: DialogmoteActionTypes.FETCH_DIALOGMOTE_FAILED,
+  error,
 });
 export const fetchDialogmoteSuccess = (
   dialogmoteDtoList: DialogmoteDTO[]
@@ -188,8 +200,9 @@ export const avlyserMote = (): AvlyserMoteAction => ({
   type: DialogmoteActionTypes.AVLYSER_MOTE,
 });
 
-export const avlysMoteFeilet = (): AvlysMoteFeiletAction => ({
+export const avlysMoteFeilet = (error: ApiError): AvlysMoteFeiletAction => ({
   type: DialogmoteActionTypes.AVLYS_MOTE_FEILET,
+  error,
 });
 
 export const avlysMoteFullfort = (): AvlysMoteFullfortAction => ({
@@ -211,8 +224,11 @@ export const endrerTidSted = (): EndrerTidStedAction => ({
   type: DialogmoteActionTypes.ENDRER_TID_STED,
 });
 
-export const endreTidStedFeilet = (): EndreTidStedFeiletAction => ({
+export const endreTidStedFeilet = (
+  error: ApiError
+): EndreTidStedFeiletAction => ({
   type: DialogmoteActionTypes.ENDRE_TID_STED_FEILET,
+  error,
 });
 
 export const endreTidStedFullfort = (): EndreTidStedFullfortAction => ({
@@ -234,8 +250,11 @@ export const ferdigstillerMote = (): FerdigstillerMoteAction => ({
   type: DialogmoteActionTypes.FERDIGSTILLER_MOTE,
 });
 
-export const ferdigstillMoteFeilet = (): FerdigstillMoteFeiletAction => ({
+export const ferdigstillMoteFeilet = (
+  error: ApiError
+): FerdigstillMoteFeiletAction => ({
   type: DialogmoteActionTypes.FERDIGSTILL_MOTE_FEILET,
+  error,
 });
 
 export const ferdigstillMoteFullfort = (): FerdigstillMoteFullfortAction => ({

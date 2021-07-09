@@ -31,7 +31,7 @@ export const DialogmoteSideContainer = ({
   }>();
   const {
     henterMote,
-    henterMoteFeilet,
+    henterMoteFeil,
     dialogmoter,
     moterHentet,
   } = useAppSelector((state) => state.dialogmote);
@@ -44,14 +44,13 @@ export const DialogmoteSideContainer = ({
   }, [dispatch, fnr, moterHentet]);
 
   const henter = henterMote;
-  const hentingFeilet = henterMoteFeilet;
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid
   );
 
   return (
     <Side fnr={fnr} tittel={title} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+      <SideLaster henter={henter} hentingFeilet={!!henterMoteFeil}>
         <Sidetopp tittel={header} />
         {dialogmote ? (
           children(dialogmote)

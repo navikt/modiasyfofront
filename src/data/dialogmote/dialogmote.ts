@@ -1,42 +1,43 @@
 import { Reducer } from "redux";
 import { DialogmoteActions, DialogmoteActionTypes } from "./dialogmote_actions";
 import { DialogmoteDTO } from "./types/dialogmoteTypes";
+import { ApiError } from "../../api/api";
 
 export interface DialogmoteState {
   senderInnkalling: boolean;
-  sendInnkallingFeilet: boolean;
+  sendInnkallingFeil: ApiError | null;
   sendInnkallingFullfort: boolean;
   henterMote: boolean;
-  henterMoteFeilet: boolean;
+  henterMoteFeil: ApiError | null;
   henterMoteForsokt: boolean;
   moterHentet: boolean;
   dialogmoter: DialogmoteDTO[];
   avlyserMote: boolean;
-  avlysMoteFeilet: boolean;
+  avlysMoteFeil: ApiError | null;
   avlysMoteFullfort: boolean;
   endrerTidSted: boolean;
-  endreTidStedFeilet: boolean;
+  endreTidStedFeil: ApiError | null;
   endreTidStedFullfort: boolean;
   ferdigstillerMote: boolean;
-  ferdigstillMoteFeilet: boolean;
+  ferdigstillMoteFeil: ApiError | null;
   ferdigstillMoteFullfort: boolean;
 }
 
 export const initialState: DialogmoteState = {
   senderInnkalling: false,
-  sendInnkallingFeilet: false,
+  sendInnkallingFeil: null,
   sendInnkallingFullfort: false,
-  avlysMoteFeilet: false,
+  avlysMoteFeil: null,
   avlyserMote: false,
   avlysMoteFullfort: false,
   endrerTidSted: false,
-  endreTidStedFeilet: false,
+  endreTidStedFeil: null,
   endreTidStedFullfort: false,
   ferdigstillerMote: false,
-  ferdigstillMoteFeilet: false,
+  ferdigstillMoteFeil: null,
   ferdigstillMoteFullfort: false,
   henterMote: false,
-  henterMoteFeilet: false,
+  henterMoteFeil: null,
   henterMoteForsokt: false,
   moterHentet: false,
   dialogmoter: [],
@@ -65,7 +66,7 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
         ...state,
         senderInnkalling: false,
         sendInnkallingFullfort: false,
-        sendInnkallingFeilet: true,
+        sendInnkallingFeil: action.error,
       };
     }
     case DialogmoteActionTypes.AVLYSER_MOTE: {
@@ -86,7 +87,7 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
         ...state,
         avlyserMote: false,
         avlysMoteFullfort: false,
-        avlysMoteFeilet: true,
+        avlysMoteFeil: action.error,
       };
     }
     case DialogmoteActionTypes.FERDIGSTILLER_MOTE: {
@@ -107,14 +108,14 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
         ...state,
         ferdigstillerMote: false,
         ferdigstillMoteFullfort: false,
-        ferdigstillMoteFeilet: true,
+        ferdigstillMoteFeil: action.error,
       };
     }
     case DialogmoteActionTypes.FETCH_DIALOGMOTE: {
       return {
         ...state,
         henterMote: true,
-        henterMoteFeilet: false,
+        henterMoteFeil: null,
         henterMoteForsokt: false,
       };
     }
@@ -122,7 +123,7 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
       return {
         ...state,
         henterMote: false,
-        henterMoteFeilet: false,
+        henterMoteFeil: null,
         henterMoteForsokt: true,
         dialogmoter: action.dialogmoteDtoList,
         moterHentet: true,
@@ -132,8 +133,8 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
       return {
         ...state,
         henterMote: false,
-        henterMoteFeilet: true,
         henterMoteForsokt: true,
+        henterMoteFeil: action.error,
         dialogmoter: initialState.dialogmoter,
       };
     }
@@ -149,6 +150,7 @@ const dialogmote: Reducer<DialogmoteState, DialogmoteActions> = (
         endrerTidSted: false,
         endreTidStedFullfort: false,
         endreTidStedFeilet: true,
+        endreTidStedFeil: action.error,
       };
     }
     case DialogmoteActionTypes.ENDRE_TID_STED_FULLFORT: {

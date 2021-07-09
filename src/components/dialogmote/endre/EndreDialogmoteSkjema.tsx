@@ -31,8 +31,6 @@ import { AlertStripeFeil } from "nav-frontend-alertstriper";
 const texts = {
   send: "Lagre endringer",
   avbryt: "Avbryt",
-  errorMsg:
-    "Møtet kunne ikke avlyses på grunn av en midlertidig teknisk feil. Prøv igjen.",
 };
 
 const EndrePanel = styled(Panel)`
@@ -82,7 +80,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     videoLink: dialogmote.videoLink,
   };
 
-  const { endrerTidSted, endreTidStedFeilet } = useAppSelector(
+  const { endrerTidSted, endreTidStedFeil } = useAppSelector(
     (state) => state.dialogmote
   );
 
@@ -144,9 +142,11 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
           <form onSubmit={handleSubmit}>
             <DialogmoteTidOgSted />
             <EndreDialogmoteTekster opprinneligTid={dialogmote.tid} />
-            {endreTidStedFeilet && (
+            {endreTidStedFeil && (
               <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>{texts.errorMsg}</AlertStripeFeil>
+                <AlertStripeFeil>
+                  {endreTidStedFeil.defaultErrorMsg}
+                </AlertStripeFeil>
               </FlexRow>
             )}
             {submitFailed && !feilUtbedret && (
